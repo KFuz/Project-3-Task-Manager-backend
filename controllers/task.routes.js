@@ -1,9 +1,8 @@
 const router = require("express").Router();
 const Task = require("../models/Task");
-const verifyToken = require("../middleware/verifyToken");
 
 // POST /tasks
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const createdTask = await Task.create({
       taskName: req.body.taskName,
