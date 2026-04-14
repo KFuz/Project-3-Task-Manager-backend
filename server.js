@@ -25,7 +25,7 @@ app.use(logger("dev"));
 // Routes go here
 app.use("/auth", authRouter);
 app.use("/tasks", verifyToken, taskRouter);
-app.use('/comments', commentRouter);
+app.use('/comments', verifyToken, commentRouter);
 
 
 
