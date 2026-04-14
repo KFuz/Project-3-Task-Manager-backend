@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user._id }).sort({
       createdAt: -1,
-    });
+    }); // this sorts tasks by newest first (createdAt: -1 means descending order)
     res.status(200).json({ tasks });
   } catch (err) {
     console.log(err);
@@ -63,6 +63,25 @@ router.put("/:id", async (req, res) => {
     }
 
     res.status(200).json({ task: updatedTask });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: err.message });
+  }
+});
+
+// DELETE /tasks/:id
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedTask = await Task.findOneAndDelete({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+
+    if (!deletedTask) {
+      return res.status(404).json({ err: "Task not found" });
+    }
+
+    res.status(200).json({ message: "Task deleted successfully" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ err: err.message });
