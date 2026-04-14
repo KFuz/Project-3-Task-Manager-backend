@@ -46,4 +46,27 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// PUT /tasks/:id
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: req.params.id, user: req.user._id },
+      {
+        taskName: req.body.taskName,
+        taskStatus: req.body.taskStatus,
+      },
+      { new: true, runValidators: true },
+    );
+
+    if (!updatedTask) {
+      return res.status(404).json({ err: "Task not found" });
+    }
+
+    res.status(200).json({ task: updatedTask });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: err.message });
+  }
+});
+
 module.exports = router;
