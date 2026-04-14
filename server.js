@@ -8,6 +8,9 @@ const logger = require("morgan");
 const authRouter = require("./controllers/auth.routes");
 const verifyToken = require("./middleware/verify-token");
 const taskRouter = require("./controllers/task.routes");
+const commentRouter = require('./controllers/comment.routes');
+
+
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -22,6 +25,9 @@ app.use(logger("dev"));
 // Routes go here
 app.use("/auth", authRouter);
 app.use("/tasks", verifyToken, taskRouter);
+app.use('/comments', commentRouter);
+
+
 
 app.listen(3000, () => {
   console.log("The express app is ready!");
